@@ -23,7 +23,7 @@ for flacfile in *.flac; do
 
   echo "Converting: $flacfile --> $MP3FILE"
 
-  ARIST=$(getTag "$flacfile" ARTIST)
+  ARTIST=$(getTag "$flacfile" ARTIST)
   TITLE=$(getTag "$flacfile" TITLE)
   ALBUM=$(getTag "$flacfile" ALBUM)
   GENRE=$(getTag "$flacfile" GENRE)
