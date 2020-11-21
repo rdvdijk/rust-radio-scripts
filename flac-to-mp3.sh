@@ -18,14 +18,16 @@ getTag() {
 }
 
 for flacfile in *.flac; do
+  echo "$flacfile"
+
   MP3FILE="mp3/${flacfile%.flac}.mp3"
 
-  ARIST=$(getTag $flacfile ARTIST)
-  TITLE=$(getTag $flacfile TITLE)
-  ALBUM=$(getTag $flacfile ALBUM)
-  GENRE=$(getTag $flacfile GENRE)
-  TRACKNUMBER=$(getTag $flacfile TRACKNUMBER)
-  DATE=$(getTag $flacfile DATE)
+  ARIST=$(getTag "$flacfile" ARTIST)
+  TITLE=$(getTag "$flacfile" TITLE)
+  ALBUM=$(getTag "$flacfile" ALBUM)
+  GENRE=$(getTag "$flacfile" GENRE)
+  TRACKNUMBER=$(getTag "$flacfile" TRACKNUMBER)
+  DATE=$(getTag "$flacfile" DATE)
 
   mkdir -p mp3
   flac -c -d "$flacfile" | lame -m j -q 0 --vbr-new -V 0 -s 44.1 - "$MP3FILE"
