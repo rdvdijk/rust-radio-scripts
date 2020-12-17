@@ -1,6 +1,7 @@
 #!/bin/bash
 #
 # This script renames FLAC folders, and adds the city name as found in the info file.
+# The script assumes the location to be located on the 4th line of the info file.
 #
 
 add_location () {
@@ -13,7 +14,7 @@ add_location () {
   local infofile="$path/$showprefix.txt"
 
   if [[ -f "$infofile" ]]; then
-    local locations=$(head -n3 "$infofile" | tail -n1 | cut -d, -f1 | tr '[:upper:]' '[:lower:]')
+    local locations=$(head -n4 "$infofile" | tail -n1 | cut -d, -f1 | tr '[:upper:]' '[:lower:]' | tr -d "[:space:]" )
     local location=${locations// /}
     local expected="$showprefix.$location"
 
