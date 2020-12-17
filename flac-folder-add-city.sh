@@ -5,6 +5,7 @@
 
 add_location () {
   local path=$1
+  local force=$2
 
   local dirname=${path##*/}
   local showprefix=$(gawk -v dirname="$dirname" 'BEGIN { show=gensub(/([a-z]*[0-9]*-[0-9]*-[0-9]*)(.*)/,"\\1", "g", dirname); print show }')
@@ -18,11 +19,23 @@ add_location () {
 
     if [[ ! "$dirname" =~ ^$expected.* ]]; then
       local newdirname="$showprefix.$location$showsuffix"
-      mv -i "$dirname" "$newdirname"
+      if [[ -z "$force" ]]; then
+        printf "mv -i %-50s %s\n" "\"$dirname\"" "\"$newdirname\""
+      else
+        mv -i "$dirname" "$newdirname"
+      fi
     fi
   fi
 }
 
 export -f add_location
 
-find -mindepth 1 -maxdepth 1 -type d -exec bash -c 'add_location "$0"' {} \;
+while getopts "f" opt
+do
+  case "${opt}" in
+    f) force=1
+      ;;
+  esac
+done
+
+find -mindepth 1 -maxdepth 1 -type d -exec bash -c "add_location \"\$0\" \"$force\"" {} \;
