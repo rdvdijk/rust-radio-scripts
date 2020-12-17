@@ -4,7 +4,7 @@
 #
 
 DIRNAME=${PWD##*/}
-ID=$(gawk -v dirname="$DIRNAME" 'BEGIN { show=gensub(/([a-z]*[0-9]*-[0-9]*-[0-9]*)(.*)/,"\\1", "g", dirname); print show }')
+ID=$(awk -v dirname="$DIRNAME" 'BEGIN { show=gensub(/([a-z]*[0-9]*-[0-9]*-[0-9]*)(.*)/,"\\1", "g", dirname); print show }')
 FFPFILE=$ID.ffp.txt
 
 if [ -e $FFPFILE ]

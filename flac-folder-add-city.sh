@@ -7,8 +7,8 @@ add_location () {
   local path=$1
 
   local dirname=${path##*/}
-  local showprefix=$(gawk -v dirname="$dirname" 'BEGIN { show=gensub(/([a-z]*[0-9]*-[0-9]*-[0-9]*)(.*)/,"\\1", "g", dirname); print show }')
-  local showsuffix=$(gawk -v dirname="$dirname" 'BEGIN { show=gensub(/([a-z]*[0-9]*-[0-9]*-[0-9]*)(.*)/,"\\2", "g", dirname); print show }')
+  local showprefix=$(awk -v dirname="$dirname" 'BEGIN { show=gensub(/([a-z]*[0-9]*-[0-9]*-[0-9]*)(.*)/,"\\1", "g", dirname); print show }')
+  local showsuffix=$(awk -v dirname="$dirname" 'BEGIN { show=gensub(/([a-z]*[0-9]*-[0-9]*-[0-9]*)(.*)/,"\\2", "g", dirname); print show }')
   local infofile="$path/$showprefix.txt"
 
   if [[ -f "$infofile" ]]; then

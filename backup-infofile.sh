@@ -11,7 +11,7 @@ then
 fi
 
 DIRNAME=${PWD##*/}
-ID=$(gawk -v dirname="$DIRNAME" 'BEGIN { show=gensub(/([a-z]*[0-9]*-[0-9]*-[0-9]*)(.*)/,"\\1", "g", dirname); print show }')
+ID=$(awk -v dirname="$DIRNAME" 'BEGIN { show=gensub(/([a-z]*[0-9]*-[0-9]*-[0-9]*)(.*)/,"\\1", "g", dirname); print show }')
 
 NEW="${ID}.orig.txt"
 COPY="${ID}.txt"
