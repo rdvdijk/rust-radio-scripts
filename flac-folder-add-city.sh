@@ -9,12 +9,14 @@ add_location () {
   local force=$2
 
   local dirname=${path##*/}
-  local showprefix=$(gawk -v dirname="$dirname" 'BEGIN { show=gensub(/([a-z]*[0-9]*-[0-9]*-[0-9]*)(.*)/,"\\1", "g", dirname); print show }')
-  local showsuffix=$(gawk -v dirname="$dirname" 'BEGIN { show=gensub(/([a-z]*[0-9]*-[0-9]*-[0-9]*)(.*)/,"\\2", "g", dirname); print show }')
-  local infofile="$path/$showprefix.txt"
+  local showid=$(gawk -v dirname="$dirname" 'BEGIN { show=gensub(/([a-z]*[0-9]*-[0-9]*-[0-9]*)(.*)/,"\\1", "g", dirname); print show }')
+  local infofile="$path/$showid.txt"
+
+  local showprefix=$(gawk -v dirname="$dirname" 'BEGIN { show=gensub(/([a-z]*[0-9]*-[0-9]*-[0-9]*(\.(late|early))?)(.*)/,"\\1", "g", dirname); print show }')
+  local showsuffix=$(gawk -v dirname="$dirname" 'BEGIN { show=gensub(/([a-z]*[0-9]*-[0-9]*-[0-9]*(\.(late|early))?)(.*)/,"\\4", "g", dirname); print show }')
 
   if [[ -f "$infofile" ]]; then
-    local locations=$(head -n4 "$infofile" | tail -n1 | cut -d, -f1 | tr '[:upper:]' '[:lower:]' | tr -d "[:space:]" )
+    local locations=$(head -n4 "$infofile" | tail -n1 | cut -d, -f1 | tr '[:upper:]' '[:lower:]' | tr -d "." | tr -d "[:space:]" )
     local location=${locations// /}
     local expected="$showprefix.$location"
 
