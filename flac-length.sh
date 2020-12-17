@@ -26,7 +26,7 @@ do
       echo "sbe!"
       break
     elif [[ "$line" =~ .*files?\).* ]]; then
-      echo $line | awk '{
+      echo $line | gawk '{
         min=gensub(/([0-9]*):([0-9]*).([0-9]*)/, "\\1", 1, $1); 
         sec=gensub(/([0-9]*):([0-9]*).([0-9]*)/, "\\2", 1, $1); 
         printf "["
