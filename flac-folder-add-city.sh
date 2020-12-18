@@ -16,7 +16,7 @@ add_location () {
   local showsuffix=$(gawk -v dirname="$dirname" 'BEGIN { show=gensub(/([a-z]*[0-9]*-[0-9]*-[0-9]*(\.(late|early))?)(.*)/,"\\4", "g", dirname); print show }')
 
   if [[ -f "$infofile" ]]; then
-    local locations=$(head -n4 "$infofile" | tail -n1 | cut -d, -f1 | tr '[:upper:]' '[:lower:]' | tr -d "." | tr -d "[:space:]" )
+    local locations=$(head -n4 "$infofile" | tail -n1 | cut -d, -f1 | tr '[:upper:]' '[:lower:]' | tr -d "." | tr -d "-" | tr -d "[:space:]" )
     local location=${locations// /}
     local expected="$showprefix.$location"
 
