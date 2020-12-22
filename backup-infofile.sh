@@ -32,5 +32,6 @@ then
   exit
 else
   cp "${NEW}" "${COPY}"
+  fromdos "${COPY}"
 fi
 
