@@ -14,6 +14,7 @@ export -f tag_value
 # Print tags for a FLAC file.
 #
 print_tags () {
+  set -f
   local file=$1
 
   local tracknumber=$(tag_value $file TRACKNUMBER)
