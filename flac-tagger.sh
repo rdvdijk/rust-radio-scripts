@@ -30,7 +30,7 @@ else
   echo
 fi
 
-flactagger.rb -T a -m b -r -t "GENRE=$GENRE" -B -p -i $INFOFILE *.flac
+flactagger.rb -T c -m b -r -t "GENRE=$GENRE" -B -p -i $INFOFILE *.flac
 
 # create .ffp.txt file:
 ffp
