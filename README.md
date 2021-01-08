@@ -67,3 +67,16 @@ and create a backup of the original.
 
 Alias: `orig`
 
+## flac-print-tags.sh
+
+Print a table of FLAC tags in the current directory.
+
+Alias: `pt`
+
+## wav-tweak-fffe-header.sh
+
+Replaces the `WAVE_FORMAT_EXTENSIBLE` header with `WAVE_FORMAT_PCM`,
+to allow some code (like `ssrc_hp`) to work again.
+
+Alias: `tweakwav`
+
