@@ -80,3 +80,10 @@ to allow some code (like `ssrc_hp`) to work again.
 
 Alias: `tweakwav`
 
+## flac-24bit-folder-to-16bit.sh
+
+Converts a folder of 24-bit FLAC files to 16-bit. This script uses
+a few of the other scripts in this project.
+
+Alias: `24to16`
+
