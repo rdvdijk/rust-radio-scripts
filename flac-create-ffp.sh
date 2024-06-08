@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# This script created a .ffp.txt file for FLAC files in the current folder.
+# This script creates a .ffp.txt file for FLAC files in the current folder.
 #
 
 DIRNAME=${PWD##*/}

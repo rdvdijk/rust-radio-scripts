@@ -10,7 +10,15 @@ checkInstalled() { if ! [ -x "$(command -v $1)" ]; then echo "'$1' could not be 
 
 checkInstalled ssrc_hp
 
-mkdir 441
+FOLDER="441"
+
+if [[ -n "$1" ]]
+then
+  FOLDER="$1"
+  echo "saving files in: $FOLDER"
+fi
+
+mkdir -p $FOLDER
 find . -name "*.wav" \
   -exec ssrc_hp \
   --bits 16 \
@@ -19,4 +27,4 @@ find . -name "*.wav" \
   --dither 3 \
   --pdf 1 1 \
   {} \
-  441/{} \;
+  $FOLDER/{} \;
