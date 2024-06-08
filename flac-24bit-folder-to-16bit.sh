@@ -4,15 +4,16 @@
 #
 DIRNAME=${PWD##*/}
 NEWDIRNAME=$(gawk -v dirname="$DIRNAME" 'BEGIN { foldername=gensub(/flac24/, "flac16", "g", dirname); print foldername }')
+SCRIPTDIR=$(dirname $0)
 
-mkdir $NEWDIRNAME
+mkdir -p $NEWDIRNAME
 flac -d *.flac
-tweakwav
-to1644 $NEWDIRNAME
+$SCRIPTDIR/wav-tweak-fffe-header.sh
+$SCRIPTDIR/wav-to-16bit-44khz.sh $NEWDIRNAME
 rm *.wav
 cp *.txt $NEWDIRNAME
 cd $NEWDIRNAME
-rmchecksums
+$SCRIPTDIR/remove-checksums.sh
 flac --best --sector-align --delete-input-file *.wav
 cd ..
 
