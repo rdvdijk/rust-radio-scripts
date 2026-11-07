@@ -87,3 +87,10 @@ a few of the other scripts in this project.
 
 Alias: `24to16`
 
+## flac-tags.sh
+
+Backs up FLAC Vorbis tags, which can then be restored. Useful to
+restore tags after editing or converting a set of FLAC files.
+
+Alias: `tags`
+
