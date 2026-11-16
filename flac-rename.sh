@@ -4,9 +4,10 @@
 #
 # Usage: flac-rename.sh [PREFIX [INFIX]]
 #
-# PREFIX only matches files starting with it, INFIX is inserted before the
-# track number. After seeing the proposed renames, press 'd' to enter a
-# prefix and infix interactively (e.g. "D1 d1"), once per disc.
+# PREFIX matches files containing it anywhere in their name (it may also
+# contain glob wildcards), e.g. 't1' matches "Artist 1976-11-22 t101 Song.flac".
+# INFIX is inserted before the track number. After seeing the proposed renames,
+# press 'd' to enter a prefix and infix interactively (e.g. "t1 d1"), once per disc.
 #
 
 DIRNAME=${PWD##*/}
@@ -18,21 +19,21 @@ INFIX="$2"
 shopt -s nullglob
 
 ask_prefix_infix () {
-  read -r -p "Prefix and infix (e.g. 'D1 d1', empty to quit): " PREFIX INFIX
+  read -r -p "Prefix and infix (e.g. 'D1 d1' or 't1 d1', empty to quit): " PREFIX INFIX
   [[ -n "$PREFIX" ]]
 }
 
 while true; do
-  [[ -n "$PREFIX" ]] && echo "matching prefix: $PREFIX"
+  [[ -n "$PREFIX" ]] && echo "matching: *$PREFIX*.flac"
   [[ -n "$INFIX" ]] && echo "inserting infix: $INFIX"
 
-  FILES=( "$PREFIX"*.flac )
+  IFS=
+  FILES=( *$PREFIX*.flac )
+  unset IFS
   OLD=()
   NEW=()
   for (( a=0; a<${#FILES[@]}; a++ )); do
     new=$(printf "%s%st%02d.flac" "$ID" "$INFIX" $((a+1)))
-    # Files already named correctly keep their number but are skipped, as
-    # 'mv -i' refuses to move a file onto itself.
     if [[ "${FILES[a]}" != "$new" ]]; then
       OLD+=( "${FILES[a]}" )
       NEW+=( "$new" )
@@ -40,7 +41,7 @@ while true; do
   done
 
   if [[ ${#FILES[@]} -eq 0 ]]; then
-    echo "No FLAC files found matching ${PREFIX}*.flac"
+    echo "No FLAC files found matching *${PREFIX}*.flac"
     [[ -z "$PREFIX" ]] && exit 1
   elif [[ ${#OLD[@]} -eq 0 ]]; then
     echo "No renames required"
