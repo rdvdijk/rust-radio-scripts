@@ -6,6 +6,7 @@
 #
 # PREFIX matches files containing it anywhere in their name (it may also
 # contain glob wildcards), e.g. 't1' matches "Artist 1976-11-22 t101 Song.flac".
+# A leading '^' anchors it to the start of the name, e.g. '^1' matches "101 Song.flac".
 # INFIX is inserted before the track number. After seeing the proposed renames,
 # press 'd' to enter a prefix and infix interactively (e.g. "t1 d1"), once per disc.
 #
@@ -24,11 +25,19 @@ ask_prefix_infix () {
 }
 
 while true; do
-  [[ -n "$PREFIX" ]] && echo "matching: *$PREFIX*.flac"
+  if [[ "$PREFIX" == ^* ]]; then
+    PATTERN="${PREFIX#^}*.flac"
+  elif [[ -n "$PREFIX" ]]; then
+    PATTERN="*$PREFIX*.flac"
+  else
+    PATTERN="*.flac"
+  fi
+
+  [[ -n "$PREFIX" ]] && echo "matching: $PATTERN"
   [[ -n "$INFIX" ]] && echo "inserting infix: $INFIX"
 
   IFS=
-  MATCHED=( *$PREFIX*.flac )
+  MATCHED=( $PATTERN )
   unset IFS
 
   FILES=()
@@ -50,7 +59,7 @@ while true; do
   done
 
   if [[ ${#MATCHED[@]} -eq 0 ]]; then
-    echo "No FLAC files found matching *${PREFIX}${PREFIX:+*}.flac"
+    echo "No FLAC files found matching $PATTERN"
     [[ -z "$PREFIX" ]] && exit 1
   elif [[ ${#OLD[@]} -eq 0 ]]; then
     echo "No renames required"
