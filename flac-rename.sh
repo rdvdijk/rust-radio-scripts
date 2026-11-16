@@ -20,16 +20,30 @@ then
   echo "inserting infix: $INFIX"
 fi
 
-read -p "Rename FLAC files to ${ID}${INFIX}t00.flac. Are you sure? " -n 1 -r
+shopt -s nullglob
+OLD=( "$PREFIX"*.flac )
+
+if [[ ${#OLD[@]} -eq 0 ]]
+then
+  echo "No FLAC files found matching ${PREFIX}*.flac"
+  exit 1
+fi
+
+NEW=()
+for (( a=0; a<${#OLD[@]}; a++ )); do
+  NEW+=( "$(printf "%s%st%02d.flac" "$ID" "$INFIX" $((a+1)))" )
+done
+
+for (( a=0; a<${#OLD[@]}; a++ )); do
+  echo "${OLD[a]}  ->  ${NEW[a]}"
+done
+
+read -p "Apply these ${#OLD[@]} renames? " -n 1 -r
+echo
 
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-  echo
-  a=1
-  for i in $PREFIX*.flac; do
-    new=$(printf "${ID}${INFIX}t%02d.flac" ${a}) #04 pad to length of 4
-    echo "${new}  (was: ${i})"
-    mv -i "${i}" "${new}"
-    let a=a+1
+  for (( a=0; a<${#OLD[@]}; a++ )); do
+    mv -i "${OLD[a]}" "${NEW[a]}"
   done
 fi
