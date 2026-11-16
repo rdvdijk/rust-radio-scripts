@@ -28,8 +28,17 @@ while true; do
   [[ -n "$INFIX" ]] && echo "inserting infix: $INFIX"
 
   IFS=
-  FILES=( *$PREFIX*.flac )
+  MATCHED=( *$PREFIX*.flac )
   unset IFS
+
+  FILES=()
+  for f in "${MATCHED[@]}"; do
+    if [[ -z "$INFIX" && "$f" == "$ID"d[1-3]t[0-9][0-9].flac ]]; then
+      continue
+    fi
+    FILES+=( "$f" )
+  done
+
   OLD=()
   NEW=()
   for (( a=0; a<${#FILES[@]}; a++ )); do
@@ -40,8 +49,8 @@ while true; do
     fi
   done
 
-  if [[ ${#FILES[@]} -eq 0 ]]; then
-    echo "No FLAC files found matching *${PREFIX}*.flac"
+  if [[ ${#MATCHED[@]} -eq 0 ]]; then
+    echo "No FLAC files found matching *${PREFIX}${PREFIX:+*}.flac"
     [[ -z "$PREFIX" ]] && exit 1
   elif [[ ${#OLD[@]} -eq 0 ]]; then
     echo "No renames required"
