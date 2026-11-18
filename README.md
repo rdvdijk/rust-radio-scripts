@@ -22,6 +22,12 @@ of the `flactagger.rb` Ruby script, originally written by Tochiro.
 
 Alias: `ft`
 
+## flac-tagger-folders.sh
+
+Runs `flac-tagger.sh` in every sub-subfolder of the current folder,
+using the shortest `.txt` filename in each folder as infofile. Asks
+for confirmation per folder.
+
 ## flac-create-ffp.sh
 
 Create a `.ffp.txt` file of FLAC fingerprints in the current folder.
